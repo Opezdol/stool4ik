@@ -3,11 +3,11 @@ from math import pi, cos, sin
 
 
 def makeLid(
-        R: float = 200,
-        THICK: float = 21,
-        FILLET: float = 10,
-        seatVerticalScale: float = 5
-    ) -> cq.Workplane:
+    R: float = 200,
+    THICK: float = 21,
+    FILLET: float = 10,
+    seatVerticalScale: float = 5
+) -> cq.Workplane:
     """
     Makes the lid of stool4ik
     """
@@ -36,36 +36,40 @@ def makeLid(
     res = res.cut(biatch)
     return res
 
+
 def makeLid_theSecond(
-        R: float = 200,
-        THICK: float = 21,
-        FILLET: float = 10,
-        seatVerticalScale: float = 5
-    ) -> cq.Workplane:
+    R: float = 200,
+    THICK: float = 21,
+    FILLET: float = 10,
+    seatVerticalScale: float = 5
+) -> cq.Workplane:
     """ Second version of lid.
     """
-    def _wave(plane: cq.Workplane)->cq.Solid:
+    def _wave(plane: cq.Workplane) -> cq.Solid:
         """
         generates solid wave to cut the base perpendicular to given plane"""
 
-        wave =(
-                plane
-                .parametricCurve(
-                    lambda x: (x,0,
-                        seatVerticalScale*cos(1.69*x*pi/R)-seatVerticalScale
-                        ),
-                    start = 0,
-                    stop = R
-                    )
-                )
+        wave = (
+            plane
+            .parametricCurve(
+                lambda x: (x, 0,
+                           seatVerticalScale *
+                           cos(1.69*x*pi/R)-seatVerticalScale
+                           ),
+                start=0,
+                stop=R
+            )
+        )
         debug(wave)
-        res = wave.revolve(axisEnd=plane.val().normalized(),combine=False)
+        res = wave.revolve(axisEnd=plane.val().normalized(), combine=False)
         return res
     base = (
-            cq.Workplane()
-            .circle(R)
-            .extrude(THICK)
-            )
+        cq.Workplane()
+        .circle(R)
+        .extrude(THICK)
+    )
     return _wave(base.faces('>Z').workplane())
+
+
 res = makeLid_theSecond()
 show_object(res)
