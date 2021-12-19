@@ -40,7 +40,7 @@ def makeLid(
 def makeLid_theSecond(
     R: float = 200,
     THICK: float = 21,
-    FILLET: float = 10,
+    FILLET: float = 15,
     seatVerticalScale: float = 5
 ) -> cq.Workplane:
     """ Second version of lid.
@@ -67,9 +67,13 @@ def makeLid_theSecond(
         cq.Workplane()
         .circle(R)
         .extrude(THICK)
-    )
-    return _wave(base.faces('>Z').workplane())
-
+        .edges('>Z').fillet(FILLET) # Fillet primarily 
+        )
+    # cut base wiith generated wave Solid 
+    base = base.cut(
+            _wave(base.faces(">Z").workplane())
+            )
+    return base
 
 res = makeLid_theSecond()
 show_object(res)
