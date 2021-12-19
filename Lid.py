@@ -38,7 +38,7 @@ def makeLid(
 
 
 def makeLid_theSecond(
-    R: float = 200,
+    R: float = 150,
     THICK: float = 21,
     FILLET: float = 15,
     seatVerticalScale: float = 5
